@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<style>
+  :root {
+    --tree-line: #94a3b8;
+  }
+  body {
+    font-family: sans-serif;
+    padding: 40px;
+  }
+  
+  /* Approach: Clean, robust RTL & LTR Tree */
+  .ft-tree, .ft-tree ul {
+    margin: 0;
+    padding: 0;
+    list-style-type: none;
+    display: flex;
+    justify-content: center;
+    position: relative;
+  }
+  .ft-tree ul {
+    padding-top: 28px;
+  }
+  .ft-tree li {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    padding: 0 10px;
+  }
+  
+  /* LTR Rules */
+  html[dir="ltr"] .ft-tree li::before,
+  html[dir="ltr"] .ft-tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-top: 2px solid var(--tree-line);
+    width: 50%;
+    height: 28px;
+  }
+  html[dir="ltr"] .ft-tree li::after {
+    right: auto;
+    left: 50%;
+    border-left: 2px solid var(--tree-line);
+  }
+  html[dir="ltr"] .ft-tree li:only-child::after,
+  html[dir="ltr"] .ft-tree li:only-child::before {
+    display: none;
+  }
+  html[dir="ltr"] .ft-tree li:only-child {
+    padding-top: 0;
+  }
+  html[dir="ltr"] .ft-tree li:first-child::before,
+  html[dir="ltr"] .ft-tree li:last-child::after {
+    border: 0 none;
+  }
+  html[dir="ltr"] .ft-tree li:last-child::before {
+    border-right: 2px solid var(--tree-line);
+    border-radius: 0 8px 0 0;
+  }
+  html[dir="ltr"] .ft-tree li:first-child::after {
+    border-radius: 8px 0 0 0;
+  }
+  html[dir="ltr"] .ft-tree ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-left: 2px solid var(--tree-line);
+    width: 0;
+    height: 28px;
+  }
+
+  /* RTL Rules */
+  html[dir="rtl"] .ft-tree li::before,
+  html[dir="rtl"] .ft-tree li::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    border-top: 2px solid var(--tree-line);
+    width: 50%;
+    height: 28px;
+  }
+  html[dir="rtl"] .ft-tree li::after {
+    left: auto;
+    right: 50%;
+    border-right: 2px solid var(--tree-line);
+  }
+  html[dir="rtl"] .ft-tree li:only-child::after,
+  html[dir="rtl"] .ft-tree li:only-child::before {
+    display: none;
+  }
+  html[dir="rtl"] .ft-tree li:only-child {
+    padding-top: 0;
+  }
+  /* In RTL: first-child is on the right, so it must not have a line to its right (after).
+     Its ::before goes to the left (towards other children), with rounded top-right corner. */
+  html[dir="rtl"] .ft-tree li:first-child::after,
+  html[dir="rtl"] .ft-tree li:last-child::before {
+    border: 0 none;
+  }
+  html[dir="rtl"] .ft-tree li:first-child::before {
+    border-right: 2px solid var(--tree-line);
+    border-radius: 0 8px 0 0;
+  }
+  html[dir="rtl"] .ft-tree li:last-child::after {
+    border-left: 2px solid var(--tree-line);
+    border-radius: 8px 0 0 0;
+  }
+  html[dir="rtl"] .ft-tree ul::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 50%;
+    border-right: 2px solid var(--tree-line);
+    width: 0;
+    height: 28px;
+  }
+  
+  .node {
+    padding: 8px 16px;
+    border: 1px solid #333;
+    border-radius: 8px;
+    background: #fff;
+    z-index: 2;
+  }
+</style>
+</head>
+<body>
+  <h2>Test in RTL</h2>
+  <div dir="rtl">
+    <ul class="ft-tree">
+      <li>
+        <div class="node">الأب</div>
+        <ul>
+          <li><div class="node">الابن الأول (يمين)</div></li>
+          <li><div class="node">الابن الثاني (وسط)</div></li>
+          <li><div class="node">الابن الثالث (يسار)</div></li>
+        </ul>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -4,7 +4,6 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=5.0, viewport-fit=cover">
   <title>شجرة عائلة آل ندى | إعداد: إيهاب ندى</title>
-  <link rel="icon" type="image/svg+xml" href="nada-logo-icon.svg">
   <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -270,22 +269,23 @@ header {
 .brand-logo {
   width: 44px;
   height: 44px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: #FFFFFF;
   border-radius: 12px;
-  display: block;
-  object-fit: contain;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  font-weight: 700;
   box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.25);
   flex-shrink: 0;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
-}
-
-.brand-logo:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 14px rgba(var(--primary-rgb), 0.35);
 }
 
 .brand-logo.sm {
   width: 36px;
   height: 36px;
+  font-size: 1.3rem;
   border-radius: 10px;
 }
 
@@ -581,7 +581,8 @@ main {
   overflow: auto;
   min-height: 580px;
   max-height: 75vh;
-  background: radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+  background:
+    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
   background-size: 24px 24px;
   cursor: grab;
   touch-action: pan-x pan-y;
@@ -592,31 +593,24 @@ main {
   cursor: grabbing;
 }
 
-/* NOTE: The geometric graph coordinates use direction: ltr to ensure
-   connecting lines never suffer from RTL coordinate reversal bugs,
-   while the tree cards themselves preserve RTL Arabic text and badges! */
 .tree-canvas {
-  direction: ltr !important;
-  transform-origin: 0 0;
-  padding: 60px;
-  display: inline-block;
+  padding: 40px;
   min-width: 100%;
-  text-align: center;
+  display: flex;
+  justify-content: center;
+  transform-origin: 50% 0;
   transition: transform 0.15s ease-out;
 }
 
-.ft-tree, .ft-tree ul {
-  margin: 0;
-  padding: 0;
-  list-style-type: none;
-  display: flex;
-  justify-content: center;
-  position: relative;
-  direction: ltr !important;
-}
-
+/* موصلات الشجرة العائلية (.ft-tree) */
 .ft-tree ul {
-  padding-top: 28px;
+  display: flex;
+  padding-top: 24px;
+  position: relative;
+  transition: all 0.3s;
+  justify-content: center;
+  gap: 16px;
+  list-style: none;
 }
 
 .ft-tree li {
@@ -624,11 +618,10 @@ main {
   flex-direction: column;
   align-items: center;
   position: relative;
-  padding: 0 8px;
-  direction: ltr !important;
+  padding: 20px 6px 0 6px;
+  transition: all 0.3s;
 }
 
-/* Connector lines - Rock solid in both Arabic and English */
 .ft-tree li::before, .ft-tree li::after {
   content: '';
   position: absolute;
@@ -636,7 +629,7 @@ main {
   right: 50%;
   border-top: 2px solid var(--tree-line);
   width: 50%;
-  height: 28px;
+  height: 20px;
 }
 
 .ft-tree li::after {
@@ -654,26 +647,26 @@ main {
 }
 
 .ft-tree li:first-child::before, .ft-tree li:last-child::after {
-  border: 0 none;
+  border: none 0;
 }
 
 .ft-tree li:last-child::before {
   border-right: 2px solid var(--tree-line);
-  border-radius: 0 8px 0 0;
+  border-radius: 0 10px 0 0;
 }
 
 .ft-tree li:first-child::after {
-  border-radius: 8px 0 0 0;
+  border-radius: 10px 0 0 0;
 }
 
-.ft-tree ul::before {
+.ft-tree ul ul::before {
   content: '';
   position: absolute;
   top: 0;
   left: 50%;
   border-left: 2px solid var(--tree-line);
   width: 0;
-  height: 28px;
+  height: 24px;
 }
 
 .ft-tree li.collapsed > ul {
@@ -682,8 +675,6 @@ main {
 
 /* بطاقة فرد الشجرة (Tree Node) */
 .tree-node {
-  direction: rtl;
-  text-align: center;
   background: var(--node-bg);
   border: 2px solid var(--node-border);
   border-radius: var(--radius);
@@ -749,128 +740,34 @@ main {
 }
 
 /* تمييز أجيال الشجرة بألوان متناسقة مع الهوية */
-/* ==========================================================================
-   ألوان الأجيال المميزة والمتناوبة (Distinct Generation Colors: Gen 0 to Gen 10)
-   ========================================================================== */
-
-/* الجيل 0: الجد المؤسس الأقدم (الأصل) */
 .tree-node.level-0 {
-  background: linear-gradient(135deg, #183827 0%, #2F5D46 100%);
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
   color: #FFFFFF;
-  border: 3px solid #142E20;
+  border-color: var(--primary-dark);
   padding: 14px 28px;
   border-radius: 24px;
-  box-shadow: 0 4px 14px rgba(24, 56, 39, 0.4);
 }
-.tree-node.level-0 .node-name { color: #FFFFFF; font-size: 1.35rem; font-weight: 800; }
-.tree-node.level-0 .node-sub { color: rgba(255, 255, 255, 0.9); }
-.tree-node.level-0 .node-badge, .gen-badge-0 { background: #B8893B !important; color: #FFFFFF !important; font-weight: 700; border: 1px solid #D5A34F; }
+.tree-node.level-0 .node-name {
+  color: #FFFFFF;
+  font-size: 1.3rem;
+}
+.tree-node.level-0 .node-sub {
+  color: rgba(255,255,255,0.85);
+}
+.tree-node.level-0 .node-badge {
+  background: rgba(255,255,255,0.25);
+  color: #FFFFFF;
+}
 
-/* الجيل 1: الجد مصطفى الأول */
 .tree-node.level-1 {
-  background: linear-gradient(135deg, #8A5E16 0%, #B8893B 100%);
+  background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
   color: #FFFFFF;
-  border: 3px solid #6E490E;
-  border-radius: 20px;
-  padding: 12px 24px;
-  box-shadow: 0 4px 12px rgba(184, 137, 59, 0.4);
-}
-.tree-node.level-1 .node-name { color: #FFFFFF; font-size: 1.22rem; font-weight: 800; }
-.tree-node.level-1 .node-sub { color: rgba(255, 255, 255, 0.9); }
-.tree-node.level-1 .node-badge, .gen-badge-1 { background: #2F5D46 !important; color: #FFFFFF !important; font-weight: 700; border: 1px solid #417D5F; }
-
-/* الجيل 2: الجد الجامع أحمد بن مصطفى */
-.tree-node.level-2 {
-  background: linear-gradient(135deg, #8E3E18 0%, #C45F34 100%);
-  color: #FFFFFF;
-  border: 3px solid #732E0F;
+  border-color: var(--accent-dark);
   border-radius: 18px;
-  padding: 11px 20px;
-  box-shadow: 0 4px 12px rgba(196, 95, 52, 0.35);
 }
-.tree-node.level-2 .node-name { color: #FFFFFF; font-size: 1.15rem; font-weight: 800; }
-.tree-node.level-2 .node-sub { color: rgba(255, 255, 255, 0.9); }
-.tree-node.level-2 .node-badge, .gen-badge-2 { background: #183827 !important; color: #FFFFFF !important; font-weight: 700; border: 1px solid #2F5D46; }
-
-/* الجيل 3: رؤوس الفروع الأولى - أخضر تيل بحري وقور */
-.tree-node.level-3 {
-  background: var(--node-bg);
-  border: 2px solid #165654;
-  border-top: 5px solid #165654;
-}
-.tree-node.level-3 .node-badge, .gen-badge-3 { background: #E0F2F1 !important; color: #004D40 !important; border: 1px solid #80CBC4; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-3 { border-color: #4DB6AC; border-top-color: #4DB6AC; }
-[data-theme="dark"] .tree-node.level-3 .node-badge, [data-theme="dark"] .gen-badge-3 { background: #00332C !important; color: #80CBC4 !important; border-color: #00695C; }
-
-/* الجيل 4: الفروع السبعة الرئيسية - أزرق ملكي ياقوتي */
-.tree-node.level-4 {
-  background: var(--node-bg);
-  border: 2px solid #1B4E80;
-  border-top: 5px solid #1B4E80;
-}
-.tree-node.level-4 .node-badge, .gen-badge-4 { background: #E1F5FE !important; color: #01579B !important; border: 1px solid #81D4FA; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-4 { border-color: #64B5F6; border-top-color: #64B5F6; }
-[data-theme="dark"] .tree-node.level-4 .node-badge, [data-theme="dark"] .gen-badge-4 { background: #012A4A !important; color: #90CAF9 !important; border-color: #0D47A1; }
-
-/* الجيل 5: الأجداد - بنفسجي توتي أرجواني فاخر */
-.tree-node.level-5 {
-  background: var(--node-bg);
-  border: 2px solid #632C59;
-  border-top: 5px solid #632C59;
-}
-.tree-node.level-5 .node-badge, .gen-badge-5 { background: #F3E5F5 !important; color: #4A148C !important; border: 1px solid #CE93D8; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-5 { border-color: #BA68C8; border-top-color: #BA68C8; }
-[data-theme="dark"] .tree-node.level-5 .node-badge, [data-theme="dark"] .gen-badge-5 { background: #2E0854 !important; color: #E1BEE7 !important; border-color: #6A1B9A; }
-
-/* الجيل 6: الآباء الكبار - عنبري زعفراني دافئ */
-.tree-node.level-6 {
-  background: var(--node-bg);
-  border: 2px solid #825412;
-  border-top: 5px solid #825412;
-}
-.tree-node.level-6 .node-badge, .gen-badge-6 { background: #FFF8E1 !important; color: #B75302 !important; border: 1px solid #FFE082; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-6 { border-color: #FFD54F; border-top-color: #FFD54F; }
-[data-theme="dark"] .tree-node.level-6 .node-badge, [data-theme="dark"] .gen-badge-6 { background: #3E2405 !important; color: #FFE082 !important; border-color: #B75302; }
-
-/* الجيل 7: جيل الآباء المعاصرين - زمردي غض نضر */
-.tree-node.level-7 {
-  background: var(--node-bg);
-  border: 2px solid #1B653F;
-  border-top: 5px solid #1B653F;
-}
-.tree-node.level-7 .node-badge, .gen-badge-7 { background: #E8F5E9 !important; color: #1B5E20 !important; border: 1px solid #A5D6A7; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-7 { border-color: #81C784; border-top-color: #81C784; }
-[data-theme="dark"] .tree-node.level-7 .node-badge, [data-theme="dark"] .gen-badge-7 { background: #06280E !important; color: #A5D6A7 !important; border-color: #2E7D32; }
-
-/* الجيل 8: جيل الشباب - نيلي فولاذي هادئ */
-.tree-node.level-8 {
-  background: var(--node-bg);
-  border: 2px solid #2F4D66;
-  border-top: 5px solid #2F4D66;
-}
-.tree-node.level-8 .node-badge, .gen-badge-8 { background: #ECEFF1 !important; color: #263238 !important; border: 1px solid #B0BEC5; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-8 { border-color: #90A4AE; border-top-color: #90A4AE; }
-[data-theme="dark"] .tree-node.level-8 .node-badge, [data-theme="dark"] .gen-badge-8 { background: #1A2733 !important; color: #CFD8DC !important; border-color: #455A64; }
-
-/* الجيل 9: جيل الفتيان والأحفاد - قرمزي رماني حيوي */
-.tree-node.level-9 {
-  background: var(--node-bg);
-  border: 2px solid #913030;
-  border-top: 5px solid #913030;
-}
-.tree-node.level-9 .node-badge, .gen-badge-9 { background: #FFEBEE !important; color: #B71C1C !important; border: 1px solid #FFCDD2; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-9 { border-color: #E57373; border-top-color: #E57373; }
-[data-theme="dark"] .tree-node.level-9 .node-badge, [data-theme="dark"] .gen-badge-9 { background: #380808 !important; color: #FFCDD2 !important; border-color: #C62828; }
-
-/* الجيل 10: جيل الأطفال والبراعم الواعدة - فيروزي تركوازي مشرق */
-.tree-node.level-10 {
-  background: var(--node-bg);
-  border: 2px solid #146B65;
-  border-top: 5px solid #146B65;
-}
-.tree-node.level-10 .node-badge, .gen-badge-10 { background: #E0F7FA !important; color: #006064 !important; border: 1px solid #80DEEA; font-weight: 700; }
-[data-theme="dark"] .tree-node.level-10 { border-color: #4DD0E1; border-top-color: #4DD0E1; }
-[data-theme="dark"] .tree-node.level-10 .node-badge, [data-theme="dark"] .gen-badge-10 { background: #002B30 !important; color: #80DEEA !important; border-color: #00838F; }
+.tree-node.level-1 .node-name { color: #FFFFFF; }
+.tree-node.level-1 .node-sub { color: rgba(255,255,255,0.85); }
+.tree-node.level-1 .node-badge { background: rgba(255,255,255,0.25); color: #FFFFFF; }
 
 .tree-node.highlighted {
   border-color: var(--accent);
@@ -1768,6 +1665,7 @@ main {
   .brand-logo {
     width: 36px;
     height: 36px;
+    font-size: 1.3rem;
   }
 
   /* إخفاء الأزرار المزدحمة في الترويسة وإظهار القائمة ☰ وزر الوضع وزر اللغة فقط */
@@ -1936,87 +1834,6 @@ main {
 /* ==========================================================================
    10. أسلوب الطباعة (Print Stylesheet)
    ========================================================================== */
-
-/* Toast Notification */
-.toast {
-  position: fixed;
-  bottom: 24px;
-  right: 24px;
-  background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-inline-start: 4px solid var(--primary);
-  box-shadow: var(--shadow-lg);
-  padding: 12px 20px;
-  border-radius: var(--radius-sm);
-  z-index: 200;
-  display: none;
-  align-items: center;
-  gap: 10px;
-  font-size: 0.9rem;
-  font-weight: 600;
-  color: var(--text);
-}
-
-[dir="rtl"] .toast {
-  right: auto;
-  left: 24px;
-}
-
-.toast.show {
-  display: flex !important;
-  animation: toastIn 0.3s ease;
-}
-
-@keyframes toastIn {
-  from { transform: translateY(20px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
-}
-
-@media (max-width: 639.98px) {
-  .toast {
-    bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 12px);
-    left: 50% !important;
-    right: auto !important;
-    transform: translateX(-50%);
-    width: calc(100% - 32px);
-    max-width: 360px;
-    justify-content: center;
-  }
-}
-
-/* Footer - Centered */
-footer {
-  margin-top: auto;
-  background: var(--bg-card);
-  border-top: 1px solid var(--border);
-  padding: 24px 16px;
-  text-align: center;
-  font-size: 0.88rem;
-  color: var(--text-muted);
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  width: 100%;
-}
-
-footer p {
-  text-align: center;
-  margin: 0;
-  font-size: 0.92rem;
-  color: var(--text-muted);
-}
-
-.footer-author {
-  font-weight: 700;
-  color: var(--primary);
-  text-align: center;
-  font-family: var(--font-title);
-  font-size: 1.1rem;
-  margin: 0;
-}
-
 @media print {
   header,
   .stats-bar,
@@ -2083,7 +1900,7 @@ footer p {
   <header>
     <div class="header-container">
       <div class="brand">
-        <img src="nada-logo-icon.svg" class="brand-logo" alt="شعار شجرة عائلة آل ندى" width="44" height="44">
+        <div class="brand-logo">ن</div>
         <div class="brand-titles">
           <h1 id="app-title">شجرة عائلة آل ندى</h1>
           <p id="app-subtitle">توثيق شامل ومفصل لفروع ونسب العائلة الكريمة</p>
@@ -2105,10 +1922,10 @@ footer p {
           <span class="t-add-member">إضافة فرد</span>
         </button>
 
-        <!-- Export to PDF Button -->
-        <button class="btn btn-success" onclick="exportToPDF()" id="btn-export-pdf" title="تصدير شجرة العائلة كملف PDF">
-          <span>📄</span>
-          <span class="t-export-pdf">تصدير PDF</span>
+        <!-- Print / PDF Export Button -->
+        <button class="btn btn-success" onclick="printOrExportPDF()" title="طباعة أو حفظ كملف PDF">
+          <span>🖨️</span>
+          <span class="t-print-pdf">طباعة / PDF</span>
         </button>
 
         <!-- Export JSON -->
@@ -2146,7 +1963,7 @@ footer p {
   <aside id="mobile-nav-drawer" class="nav-drawer" aria-hidden="true" role="dialog" aria-label="قائمة الخيارات">
     <div class="drawer-header">
       <div class="brand-mini">
-        <img src="nada-logo-icon.svg" class="brand-logo sm" alt="شعار شجرة عائلة آل ندى" width="36" height="36">
+        <div class="brand-logo sm">ن</div>
         <div>
           <strong style="font-family: var(--font-title); font-size: 1.15rem; color: var(--primary);" class="t-app-title">شجرة عائلة آل ندى</strong>
           <div style="font-size: 0.72rem; color: var(--text-muted);" class="t-drawer-subtitle">خيارات وإجراءات الموقع</div>
@@ -2160,8 +1977,8 @@ footer p {
         <button class="drawer-action-btn" onclick="closeMobileDrawer(); handleProtectedAction(openAddMemberModal)">
           <span>➕</span> <span class="t-add-member">إضافة فرد جديد</span>
         </button>
-        <button class="drawer-action-btn" onclick="closeMobileDrawer(); exportToPDF()">
-          <span>🖨️</span> <span class="t-export-pdf">تصدير كـ ملف PDF</span>
+        <button class="drawer-action-btn" onclick="closeMobileDrawer(); printOrExportPDF()">
+          <span>🖨️</span> <span class="t-print-pdf">طباعة / تصدير PDF</span>
         </button>
         <button class="drawer-action-btn" onclick="closeMobileDrawer(); exportData()">
           <span>💾</span> <span class="t-export">تصدير JSON</span>
@@ -2781,16 +2598,16 @@ footer p {
     </div>
   </div>
 
-  <!-- Toast Notification (Hidden by default, shown via showToast) -->
-  <div class="toast" id="toast" style="display: none;" aria-live="polite">
-    <span id="toast-icon"></span>
-    <span id="toast-msg"></span>
+  <!-- Toast -->
+  <div class="toast" id="toast">
+    <span id="toast-icon">✅</span>
+    <span id="toast-msg">تمت العملية بنجاح</span>
   </div>
 
   <!-- Footer -->
-  <footer style="text-align: center;">
-    <p style="text-align: center; margin: 0;">شجرة عائلة آل ندى © 2026</p>
-    <div class="footer-author" style="text-align: center; margin-top: 4px;">إعداد: إيهاب ندى</div>
+  <footer>
+    <p>شجرة عائلة آل ندى © 2026</p>
+    <div class="footer-author">إعداد: إيهاب ندى</div>
   </footer>
 
   <!-- SCRIPT -->
@@ -2847,8 +2664,7 @@ footer p {
         appTitle: "شجرة عائلة آل ندى",
         appSubtitle: "توثيق شامل ومفصل لفروع ونسب العائلة الكريمة",
         addMember: "إضافة فرد",
-        exportPdf: "تصدير كـ PDF",
-        printPdf: "تصدير كـ PDF",
+        printPdf: "طباعة / PDF",
         export: "تصدير JSON",
         import: "استيراد",
         login: "تسجيل دخول المحرر",
@@ -2912,8 +2728,7 @@ footer p {
         appTitle: "Al-Nada Family Tree",
         appSubtitle: "Comprehensive and Detailed Documentation of the Family Lineage",
         addMember: "Add Member",
-        exportPdf: "Export to PDF",
-        printPdf: "Export to PDF",
+        printPdf: "Print / PDF",
         export: "Export JSON",
         import: "Import",
         login: "Editor Login",
@@ -3759,8 +3574,7 @@ footer p {
       document.getElementById('app-title').textContent = t.appTitle;
       document.getElementById('app-subtitle').textContent = t.appSubtitle;
       document.querySelectorAll('.t-add-member').forEach(el => el.textContent = t.addMember);
-      document.querySelectorAll('.t-print-pdf').forEach(el => el.textContent = t.exportPdf);
-      document.querySelectorAll('.t-export-pdf').forEach(el => el.textContent = t.exportPdf);
+      document.querySelectorAll('.t-print-pdf').forEach(el => el.textContent = t.printPdf);
       document.querySelectorAll('.t-export').forEach(el => el.textContent = t.export);
       document.querySelectorAll('.t-import').forEach(el => el.textContent = t.import);
       document.querySelectorAll('.t-stat-total').forEach(el => el.textContent = t.statTotal);
@@ -3826,26 +3640,11 @@ footer p {
     // =========================================================================
     // Print & PDF Export
     // =========================================================================
-    function exportToPDF() {
-      // التأكد من بسط الشجرة بالكامل قبل التصدير
+    function printOrExportPDF() {
       expandAllNodes();
-
-      const oldTitle = document.title;
-      const pdfTitle = currentLanguage === 'ar' ? 'شجرة_عائلة_آل_ندى_توثيق_الأنساب' : 'Al_Nada_Family_Tree_Official_Chart';
-      document.title = pdfTitle;
-
-      showToast(currentLanguage === 'ar' ? '📄 جاري فتح تجهيز ملف PDF... اختر حفظ بتنسيق PDF' : '📄 Preparing PDF export... Select (Save as PDF)');
-
       setTimeout(() => {
         window.print();
-        setTimeout(() => {
-          document.title = oldTitle;
-        }, 1500);
-      }, 350);
-    }
-
-    function printOrExportPDF() {
-      exportToPDF();
+      }, 300);
     }
 
     // =========================================================================
@@ -4133,7 +3932,7 @@ footer p {
               <div class="acc-name">${name}</div>
               <div class="acc-meta">
                 <span class="acc-badge branch">${branch}</span>
-                <span class="acc-badge gen gen-badge-${node.generation}">${genText}</span>
+                <span class="acc-badge gen">${genText}</span>
                 ${hasChildren ? `<span class="acc-badge kids">${kidsText}</span>` : ''}
                 ${node.notes ? `<span style="font-size: 0.72rem; color: #b8893b;">📌 ${node.notes}</span>` : ''}
               </div>
@@ -4341,7 +4140,7 @@ footer p {
                 </td>
                 <td><span class="tag-badge">${branch}</span></td>
                 <td>${father}</td>
-                <td><span class="tag-badge gen-badge-${m.generation}">${m.generation}</span></td>
+                <td><span class="tag-badge">${m.generation}</span></td>
                 <td>${m.children_count}</td>
                 <td class="col-notes">${m.notes || '-'}</td>
                 <td>
@@ -4385,7 +4184,7 @@ footer p {
                   <div class="member-card-name">${name}</div>
                   <div class="member-card-lineage">${lineage}</div>
                 </div>
-                <span class="tag-badge gen-badge-${m.generation}">${genLabel}</span>
+                <span class="tag-badge" style="background: rgba(var(--accent-rgb), 0.15); color: var(--accent-dark);">${genLabel}</span>
               </div>
               <div class="member-card-meta">
                 <span class="tag-badge" style="background: rgba(var(--primary-rgb), 0.1); color: var(--primary);">${branch}</span>

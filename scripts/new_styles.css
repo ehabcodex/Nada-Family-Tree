@@ -1,0 +1,1882 @@
+/* ==========================================================================
+   شجرة عائلة آل ندى - نظام التصميم المتجاوب الشامل (Responsive Design System)
+   إعداد متكامل: هوية بصرية تراثية، نقاط كسر دقيقة، تنقل لمسي للموبايل
+   ========================================================================== */
+
+/* 1. متغيرات الهوية البصرية ونظام الألوان (Design Tokens) */
+:root {
+  /* الوضع الفاتح (Light Mode) */
+  --bg: #FAF6EE;               /* ورق الرسمة القديمة */
+  --bg-card: #FFFFFF;          /* البطاقات */
+  --bg-card-subtle: #F4EFE6;   /* خلفية بطاقات ثانوية */
+  --primary: #2F5D46;          /* أخضر زيتوني عميق */
+  --primary-light: #417D5F;
+  --primary-dark: #1E3D2E;
+  --primary-rgb: 47, 93, 70;
+  --accent: #B8893B;           /* ذهبي دافئ للتمييز */
+  --accent-light: #D5A34F;
+  --accent-dark: #966B27;
+  --accent-rgb: 184, 137, 59;
+  --text: #22302A;             /* نص أساسي */
+  --text-muted: #577063;       /* نص باهت */
+  --text-light: #869E92;
+  --border: #E2D9C5;           /* حدود ناعمة */
+  --border-strong: #CEC2A7;
+  --shadow: 0 4px 12px -2px rgba(47, 93, 70, 0.08), 0 2px 5px -1px rgba(0, 0, 0, 0.04);
+  --shadow-lg: 0 14px 28px -4px rgba(47, 93, 70, 0.12), 0 6px 10px -2px rgba(0, 0, 0, 0.06);
+  --radius: 14px;
+  --radius-sm: 8px;
+  --radius-lg: 20px;
+  --radius-full: 9999px;
+  
+  /* الخطوط */
+  --font-title: 'Amiri', 'Traditional Arabic', serif;
+  --font-ar: 'Cairo', system-ui, -apple-system, sans-serif;
+  --font-en: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* ألوان الشجرة الهيكلية */
+  --tree-line: #A6957A;
+  --node-bg: #FFFFFF;
+  --node-border: #D7CCB6;
+  --node-hover: #F6F1E6;
+  
+  /* ألوان النظام الدلالية */
+  --danger: #b91c1c;
+  --danger-light: #fee2e2;
+  --success: #15803d;
+  --success-light: #dcfce7;
+  --info: #0369a1;
+  --info-light: #e0f2fe;
+
+  /* أبعاد شاشات اللمس والموبايل */
+  --bottom-nav-height: 64px;
+  --header-height: 68px;
+  --touch-target-min: 44px;
+}
+
+/* الوضع الليلي (Dark Mode) */
+[data-theme="dark"] {
+  --bg: #14201A;
+  --bg-card: #1D2D25;
+  --bg-card-subtle: #24382E;
+  --primary: #6FB28F;
+  --primary-light: #8EC9AA;
+  --primary-dark: #529272;
+  --primary-rgb: 111, 178, 143;
+  --accent: #D9AE63;
+  --accent-light: #E7C687;
+  --accent-dark: #BA8E42;
+  --accent-rgb: 217, 174, 99;
+  --text: #EAF0EC;
+  --text-muted: #9DB4A7;
+  --text-light: #778F82;
+  --border: #2B4135;
+  --border-strong: #3C594A;
+  --shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 16px 32px -4px rgba(0, 0, 0, 0.65);
+  --tree-line: #4E6A59;
+  --node-bg: #22352B;
+  --node-border: #354F41;
+  --node-hover: #2C4437;
+  --danger-light: #451a1a;
+  --success-light: #143522;
+  --info-light: #162f44;
+}
+
+/* قواعد عامة وحركات أساسية */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+  transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html {
+  font-size: 15px;
+  scroll-behavior: smooth;
+  height: 100%;
+}
+
+body {
+  font-family: var(--font-ar);
+  background-color: var(--bg);
+  color: var(--text);
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  line-height: 1.6;
+  direction: rtl;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
+}
+
+body.lang-en {
+  font-family: var(--font-en);
+  direction: ltr;
+}
+
+/* العناوين بالخط التراثي Amiri */
+h1, h2, h3, .brand-titles h1, .modal-title, .section-title {
+  font-family: var(--font-title);
+  letter-spacing: -0.01em;
+}
+
+body.lang-en h1,
+body.lang-en h2,
+body.lang-en h3,
+body.lang-en .brand-titles h1,
+body.lang-en .modal-title {
+  font-family: var(--font-en);
+  font-weight: 700;
+}
+
+/* حاوية التجاوب العامة (Max Width) */
+.app-container {
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding-inline: 16px;
+}
+
+/* الأزرار العامة */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: inherit;
+  font-size: 0.88rem;
+  font-weight: 600;
+  padding: 8px 16px;
+  min-height: var(--touch-target-min);
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  background: var(--bg-card);
+  color: var(--text);
+  cursor: pointer;
+  box-shadow: 0 1px 2px rgba(0,0,0,0.05);
+  user-select: none;
+  white-space: nowrap;
+}
+
+.btn:hover {
+  background: var(--bg-card-subtle);
+  border-color: var(--border-strong);
+  transform: translateY(-1px);
+}
+
+.btn:active {
+  transform: translateY(0);
+}
+
+.btn-primary {
+  background: var(--primary);
+  color: #FFFFFF;
+  border-color: var(--primary);
+}
+.btn-primary:hover {
+  background: var(--primary-light);
+  border-color: var(--primary-light);
+  color: #FFFFFF;
+}
+
+.btn-accent {
+  background: var(--accent);
+  color: #FFFFFF;
+  border-color: var(--accent);
+}
+.btn-accent:hover {
+  background: var(--accent-light);
+  border-color: var(--accent-light);
+  color: #FFFFFF;
+}
+
+.btn-success {
+  background: var(--primary-dark);
+  color: #FFFFFF;
+  border-color: var(--primary-dark);
+}
+.btn-success:hover {
+  background: var(--primary);
+  border-color: var(--primary);
+  color: #FFFFFF;
+}
+
+.btn-danger {
+  background: var(--danger);
+  color: #FFFFFF;
+  border-color: var(--danger);
+}
+
+.btn-sm {
+  padding: 5px 10px;
+  font-size: 0.8rem;
+  min-height: 34px;
+}
+
+.btn-icon {
+  padding: 0;
+  width: 40px;
+  height: 40px;
+  min-height: 40px;
+  border-radius: 50%;
+  font-size: 1.1rem;
+}
+
+/* الترويسة (Header) */
+header {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+}
+
+.header-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  text-decoration: none;
+  color: inherit;
+  flex-shrink: 0;
+}
+
+.brand-logo {
+  width: 44px;
+  height: 44px;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+  color: #FFFFFF;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-title);
+  font-size: 1.6rem;
+  font-weight: 700;
+  box-shadow: 0 4px 10px rgba(var(--primary-rgb), 0.25);
+  flex-shrink: 0;
+}
+
+.brand-logo.sm {
+  width: 36px;
+  height: 36px;
+  font-size: 1.3rem;
+  border-radius: 10px;
+}
+
+.brand-titles h1 {
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--primary);
+  line-height: 1.2;
+  margin: 0;
+}
+
+.brand-titles p {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin: 2px 0 0 0;
+}
+
+.header-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+/* شريط الإحصائيات السريعة (Stats Bar) */
+.stats-bar {
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border);
+  padding: 8px 16px;
+  font-size: 0.85rem;
+}
+
+.stats-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stat-items {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.stat-badge {
+  background: var(--primary);
+  color: #FFFFFF;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  font-size: 0.8rem;
+}
+
+/* شريط التنقل العلوي والبحث (Nav & Search Bar) */
+.nav-search-bar {
+  background: var(--bg-card);
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 64px;
+  z-index: 40;
+  padding: 8px 16px;
+}
+
+.nav-search-inner {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+
+.tabs-nav-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.tabs {
+  display: flex;
+  gap: 6px;
+  overflow-x: auto;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding-block: 2px;
+}
+
+.tabs::-webkit-scrollbar {
+  display: none;
+}
+
+.tab-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  border: 1px solid transparent;
+  background: transparent;
+  color: var(--text-muted);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  user-select: none;
+  min-height: 40px;
+}
+
+.tab-btn:hover {
+  background: var(--bg-card-subtle);
+  color: var(--text);
+}
+
+.tab-btn.active {
+  background: rgba(var(--primary-rgb), 0.12);
+  color: var(--primary);
+  border-color: rgba(var(--primary-rgb), 0.25);
+  font-weight: 700;
+}
+
+[data-theme="dark"] .tab-btn.active {
+  background: rgba(var(--primary-rgb), 0.2);
+  color: var(--primary-light);
+  border-color: rgba(var(--primary-rgb), 0.4);
+}
+
+.tabs-layout-toggle-btn {
+  display: none; /* يظهر على الشاشات المتوسطة فقط إذا لزم */
+}
+
+/* حقل البحث العصري */
+.search-box {
+  position: relative;
+  min-width: 260px;
+  max-width: 380px;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 8px 36px 8px 36px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-full);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.search-input:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+  box-shadow: 0 0 0 3px rgba(var(--primary-rgb), 0.15);
+}
+
+.search-icon {
+  position: absolute;
+  inset-inline-start: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: var(--text-muted);
+  pointer-events: none;
+  font-size: 0.9rem;
+}
+
+.search-clear-btn {
+  position: absolute;
+  inset-inline-end: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.85rem;
+  padding: 4px;
+}
+
+/* منطقة المحتوى الرئيسي */
+main {
+  flex: 1;
+  max-width: 1400px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 16px;
+}
+
+.view-panel {
+  display: none;
+  animation: fadeIn 0.2s ease;
+}
+
+.view-panel.active {
+  display: block;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(4px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, ::before, ::after {
+    animation-duration: 0.01ms !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ==========================================================================
+   2. الشجرة الهيكلية (Tree View & Interactive Canvas)
+   ========================================================================== */
+.tree-viewport-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+  position: relative;
+}
+
+.tree-toolbar {
+  padding: 10px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  background: var(--bg-card);
+  flex-wrap: wrap;
+}
+
+/* شريط التبديل بين الشجرة والأكورديون */
+.tree-mode-bar {
+  padding: 8px 16px;
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.segmented-control {
+  display: inline-flex;
+  background: var(--bg-card);
+  padding: 3px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  gap: 2px;
+}
+
+.seg-btn {
+  border: none;
+  background: transparent;
+  padding: 6px 14px;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-muted);
+  cursor: pointer;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  min-height: 36px;
+}
+
+.seg-btn.active {
+  background: var(--primary);
+  color: #FFFFFF;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+}
+
+.tree-canvas-wrapper {
+  position: relative;
+  overflow: auto;
+  min-height: 580px;
+  max-height: 75vh;
+  background:
+    radial-gradient(circle at 1px 1px, var(--border) 1px, transparent 0);
+  background-size: 24px 24px;
+  cursor: grab;
+  touch-action: pan-x pan-y;
+  user-select: none;
+}
+
+.tree-canvas-wrapper:active {
+  cursor: grabbing;
+}
+
+.tree-canvas {
+  padding: 40px;
+  min-width: 100%;
+  display: flex;
+  justify-content: center;
+  transform-origin: 50% 0;
+  transition: transform 0.15s ease-out;
+}
+
+/* موصلات الشجرة العائلية (.ft-tree) */
+.ft-tree ul {
+  display: flex;
+  padding-top: 24px;
+  position: relative;
+  transition: all 0.3s;
+  justify-content: center;
+  gap: 16px;
+  list-style: none;
+}
+
+.ft-tree li {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+  padding: 20px 6px 0 6px;
+  transition: all 0.3s;
+}
+
+.ft-tree li::before, .ft-tree li::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 50%;
+  border-top: 2px solid var(--tree-line);
+  width: 50%;
+  height: 20px;
+}
+
+.ft-tree li::after {
+  right: auto;
+  left: 50%;
+  border-left: 2px solid var(--tree-line);
+}
+
+.ft-tree li:only-child::after, .ft-tree li:only-child::before {
+  display: none;
+}
+
+.ft-tree li:only-child {
+  padding-top: 0;
+}
+
+.ft-tree li:first-child::before, .ft-tree li:last-child::after {
+  border: none 0;
+}
+
+.ft-tree li:last-child::before {
+  border-right: 2px solid var(--tree-line);
+  border-radius: 0 10px 0 0;
+}
+
+.ft-tree li:first-child::after {
+  border-radius: 10px 0 0 0;
+}
+
+.ft-tree ul ul::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  border-left: 2px solid var(--tree-line);
+  width: 0;
+  height: 24px;
+}
+
+.ft-tree li.collapsed > ul {
+  display: none !important;
+}
+
+/* بطاقة فرد الشجرة (Tree Node) */
+.tree-node {
+  background: var(--node-bg);
+  border: 2px solid var(--node-border);
+  border-radius: var(--radius);
+  padding: 10px 14px;
+  min-width: 120px;
+  text-align: center;
+  position: relative;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+  cursor: pointer;
+  z-index: 2;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.2s ease;
+}
+
+.tree-node:hover {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lg);
+  border-color: var(--primary);
+}
+
+.tree-node .node-name {
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.tree-node .node-sub {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+}
+
+.tree-node .node-badge {
+  display: inline-block;
+  font-size: 0.68rem;
+  padding: 1px 7px;
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+  border-radius: var(--radius-full);
+  font-weight: 700;
+  margin-top: 4px;
+}
+
+.node-toggle {
+  position: absolute;
+  bottom: -13px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 24px;
+  height: 24px;
+  background: var(--primary);
+  color: #FFFFFF;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  font-weight: 800;
+  cursor: pointer;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+  z-index: 3;
+}
+
+/* تمييز أجيال الشجرة بألوان متناسقة مع الهوية */
+.tree-node.level-0 {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-light) 100%);
+  color: #FFFFFF;
+  border-color: var(--primary-dark);
+  padding: 14px 28px;
+  border-radius: 24px;
+}
+.tree-node.level-0 .node-name {
+  color: #FFFFFF;
+  font-size: 1.3rem;
+}
+.tree-node.level-0 .node-sub {
+  color: rgba(255,255,255,0.85);
+}
+.tree-node.level-0 .node-badge {
+  background: rgba(255,255,255,0.25);
+  color: #FFFFFF;
+}
+
+.tree-node.level-1 {
+  background: linear-gradient(135deg, var(--accent-dark) 0%, var(--accent) 100%);
+  color: #FFFFFF;
+  border-color: var(--accent-dark);
+  border-radius: 18px;
+}
+.tree-node.level-1 .node-name { color: #FFFFFF; }
+.tree-node.level-1 .node-sub { color: rgba(255,255,255,0.85); }
+.tree-node.level-1 .node-badge { background: rgba(255,255,255,0.25); color: #FFFFFF; }
+
+.tree-node.highlighted {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 4px rgba(var(--accent-rgb), 0.45);
+  animation: pulse 1.6s infinite;
+}
+
+@keyframes pulse {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.05); }
+  100% { transform: scale(1); }
+}
+
+/* الأزرار العائمة على الموبايل لشاشة الشجرة (FAB) */
+.mobile-tree-floating-controls {
+  position: absolute;
+  bottom: 20px;
+  inset-inline-start: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  z-index: 25;
+}
+
+.mobile-float-btn {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  color: var(--text);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  box-shadow: var(--shadow-lg);
+  cursor: pointer;
+  touch-action: manipulation;
+}
+
+.mobile-float-btn:active {
+  transform: scale(0.92);
+}
+
+/* ==========================================================================
+   3. عرض القائمة المتداخلة للموبايل (Tree Accordion View)
+   ========================================================================== */
+.tree-accordion-wrapper {
+  background: var(--bg-card);
+  padding: 16px;
+  border-radius: var(--radius);
+}
+
+.accordion-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-bottom: 14px;
+  margin-bottom: 14px;
+  border-bottom: 1px solid var(--border);
+}
+
+.tree-accordion-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.acc-node {
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg-card);
+  overflow: hidden;
+  transition: border-color 0.15s ease;
+}
+
+.acc-node:hover {
+  border-color: var(--primary);
+}
+
+.acc-row {
+  display: flex;
+  align-items: center;
+  padding: 10px 12px;
+  gap: 10px;
+  cursor: pointer;
+  user-select: none;
+  background: var(--bg-card);
+}
+
+.acc-row:active {
+  background: var(--bg-card-subtle);
+}
+
+.acc-chevron {
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--bg-card-subtle);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  flex-shrink: 0;
+  transition: transform 0.2s ease;
+}
+
+.acc-node.expanded > .acc-row .acc-chevron {
+  transform: rotate(90deg);
+  background: rgba(var(--primary-rgb), 0.15);
+  color: var(--primary);
+}
+
+.acc-info {
+  flex: 1;
+  min-width: 0;
+}
+
+.acc-name {
+  font-family: var(--font-title);
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: var(--text);
+  line-height: 1.25;
+}
+
+.acc-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  margin-top: 2px;
+  flex-wrap: wrap;
+}
+
+.acc-badge {
+  padding: 1px 6px;
+  border-radius: var(--radius-full);
+  font-size: 0.7rem;
+  font-weight: 600;
+  background: var(--bg-card-subtle);
+  color: var(--text-muted);
+}
+
+.acc-badge.branch {
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+}
+
+.acc-badge.gen {
+  background: rgba(var(--accent-rgb), 0.12);
+  color: var(--accent-dark);
+}
+
+.acc-badge.kids {
+  background: var(--bg-card-subtle);
+  color: var(--text);
+  font-weight: 700;
+}
+
+.acc-btn-view {
+  padding: 4px 8px;
+  font-size: 0.78rem;
+  min-height: 32px;
+}
+
+.acc-children {
+  display: none;
+  padding-inline-start: 18px;
+  border-inline-start: 2px solid var(--border);
+  margin-inline-start: 16px;
+  margin-block: 6px 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.acc-node:not(.expanded) > .acc-children {
+  display: none !important;
+}
+
+/* ==========================================================================
+   4. مستكشف الفروع ودليل الأسماء (Table & Cards System)
+   ========================================================================== */
+.table-container {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+}
+
+.table-toolbar {
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.filter-group {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.form-select, .form-input, .form-textarea {
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  background: var(--bg);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  outline: none;
+}
+
+.form-select:focus, .form-input:focus, .form-textarea:focus {
+  border-color: var(--primary);
+  background: var(--bg-card);
+}
+
+.data-table-wrapper {
+  overflow-x: auto;
+}
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: start;
+  font-size: 0.88rem;
+}
+
+.data-table th {
+  background: var(--bg-card-subtle);
+  color: var(--text-muted);
+  font-weight: 700;
+  padding: 12px 14px;
+  border-bottom: 1px solid var(--border);
+  white-space: nowrap;
+}
+
+.data-table td {
+  padding: 10px 14px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text);
+  vertical-align: middle;
+}
+
+.data-table tbody tr:hover {
+  background: var(--bg-card-subtle);
+}
+
+.tag-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
+  font-size: 0.75rem;
+  font-weight: 600;
+  background: var(--bg-card-subtle);
+  color: var(--text);
+}
+
+/* بطاقات الموبايل لدليل الأسماء (Mobile Member Cards) */
+.table-cards-container {
+  display: none; /* تظهر فقط في الموبايل */
+  padding: 12px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.member-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+
+.member-card-header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.member-card-name {
+  font-family: var(--font-title);
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text);
+}
+
+.member-card-lineage {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-top: 1px;
+}
+
+.member-card-meta {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+  font-size: 0.78rem;
+  padding-block: 4px;
+  border-top: 1px dashed var(--border);
+  border-bottom: 1px dashed var(--border);
+}
+
+.member-card-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  margin-top: 2px;
+}
+
+/* شريط التنقل بين الصفحات (Pagination) */
+.table-pagination {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  padding: 14px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card-subtle);
+  font-size: 0.85rem;
+}
+
+.mobile-filter-btn {
+  display: none; /* تظهر على الموبايل */
+}
+
+.active-filter-badge {
+  background: #FFFFFF;
+  color: var(--primary);
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 800;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  margin-inline-start: 4px;
+}
+
+/* ==========================================================================
+   5. الإحصائيات وبطاقات التحليل (Stats Grid)
+   ========================================================================== */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 18px;
+  box-shadow: var(--shadow);
+}
+
+.stat-card h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--primary);
+  margin-bottom: 14px;
+}
+
+.freq-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.freq-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  font-size: 0.85rem;
+}
+
+.freq-bar-bg {
+  flex: 1;
+  height: 8px;
+  background: var(--bg-card-subtle);
+  border-radius: var(--radius-full);
+  overflow: hidden;
+}
+
+.freq-bar-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+  border-radius: var(--radius-full);
+}
+
+/* ==========================================================================
+   6. مستكشف الفروع (Branches Explorer)
+   ========================================================================== */
+.branches-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 16px;
+}
+
+.branch-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  display: flex;
+  flex-direction: column;
+}
+
+.branch-header {
+  padding: 14px 16px;
+  background: var(--bg-card-subtle);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.branch-title {
+  font-family: var(--font-title);
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.branch-count {
+  font-size: 0.8rem;
+  font-weight: 700;
+  padding: 3px 8px;
+  border-radius: var(--radius-full);
+  background: rgba(var(--primary-rgb), 0.1);
+  color: var(--primary);
+}
+
+.branch-body {
+  padding: 14px 16px;
+  flex: 1;
+}
+
+.branch-tree-list {
+  list-style: none;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.branch-tree-item {
+  position: relative;
+  padding-inline-start: 16px;
+}
+
+.branch-tree-item::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: 4px;
+  top: 50%;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+.branch-node-btn {
+  background: none;
+  border: none;
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.88rem;
+  cursor: pointer;
+  text-align: start;
+  padding: 3px 0;
+}
+
+.branch-node-btn:hover {
+  color: var(--primary);
+  text-decoration: underline;
+}
+
+/* ==========================================================================
+   7. إدارة المستخدمين وسجل التعديلات (Users & Audit)
+   ========================================================================== */
+.users-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 16px;
+  flex-wrap: wrap;
+}
+
+.users-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.user-metric-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.metric-icon {
+  width: 40px;
+  height: 40px;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.2rem;
+  flex-shrink: 0;
+}
+
+.metric-val {
+  font-size: 1.3rem;
+  font-weight: 800;
+  color: var(--text);
+  line-height: 1.1;
+}
+
+.metric-lbl {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+}
+
+.session-banner {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 10px 14px;
+  margin-bottom: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+/* ==========================================================================
+   8. النوافذ المنبثقة ولوحات Bottom Sheet للموبايل
+   ========================================================================== */
+.modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 100;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.modal-backdrop.open {
+  display: flex;
+  opacity: 1;
+}
+
+.modal-window {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-lg);
+  width: 100%;
+  max-width: 520px;
+  box-shadow: var(--shadow-lg);
+  overflow: hidden;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  transform: scale(0.96) translateY(8px);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.modal-backdrop.open .modal-window {
+  transform: scale(1) translateY(0);
+}
+
+.modal-header {
+  padding: 14px 18px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: var(--bg-card);
+}
+
+.modal-title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  color: var(--primary);
+}
+
+.modal-close {
+  background: none;
+  border: none;
+  font-size: 1.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 6px;
+  line-height: 1;
+}
+
+.modal-close:hover {
+  color: var(--danger);
+  background: var(--bg-card-subtle);
+}
+
+.modal-body {
+  padding: 18px;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  flex: 1;
+}
+
+.modal-footer {
+  padding: 12px 18px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  gap: 10px;
+}
+
+.form-group {
+  margin-bottom: 14px;
+}
+
+.form-label {
+  display: block;
+  font-size: 0.82rem;
+  font-weight: 600;
+  margin-bottom: 5px;
+  color: var(--text);
+}
+
+/* لوحة القائمة الجانبية للموبايل (Off-canvas Drawer) */
+.drawer-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+  z-index: 110;
+  display: none;
+  opacity: 0;
+  transition: opacity 0.25s ease;
+}
+
+.drawer-overlay.open {
+  display: block;
+  opacity: 1;
+}
+
+.nav-drawer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  inset-inline-start: 0;
+  width: 290px;
+  max-width: 85vw;
+  background: var(--bg-card);
+  border-inline-end: 1px solid var(--border);
+  z-index: 120;
+  display: flex;
+  flex-direction: column;
+  transform: translateX(-100%);
+  transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: var(--shadow-lg);
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+[dir="rtl"] .nav-drawer {
+  transform: translateX(100%);
+}
+
+.nav-drawer.open {
+  transform: translateX(0);
+}
+
+.drawer-header {
+  padding: 16px;
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.brand-mini {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.drawer-body {
+  padding: 16px;
+  overflow-y: auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-actions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.drawer-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  padding: 10px 14px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border);
+  color: var(--text);
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  text-align: start;
+  cursor: pointer;
+  min-height: 44px;
+}
+
+.drawer-action-btn:active {
+  background: rgba(var(--primary-rgb), 0.1);
+  border-color: var(--primary);
+}
+
+.drawer-footer {
+  padding: 12px 16px;
+  border-top: 1px solid var(--border);
+  background: var(--bg-card-subtle);
+}
+
+/* الشريط السفلي الثابت للموبايل (Mobile Fixed Bottom Navigation) */
+.mobile-bottom-nav {
+  display: none; /* يظهر فقط في نقاط الكسر الخاصة بالموبايل */
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom));
+  padding-bottom: env(safe-area-inset-bottom);
+  background: var(--bg-card);
+  border-top: 1px solid var(--border);
+  z-index: 90;
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 -2px 10px rgba(0,0,0,0.06);
+  justify-content: space-around;
+  align-items: center;
+}
+
+.bottom-nav-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-family: inherit;
+  padding: 6px 0;
+  height: 100%;
+  user-select: none;
+  position: relative;
+  min-height: 48px;
+}
+
+.bottom-nav-icon {
+  font-size: 1.25rem;
+  line-height: 1;
+}
+
+.bottom-nav-label {
+  font-size: 0.68rem;
+  font-weight: 600;
+  line-height: 1;
+}
+
+.bottom-nav-item.active {
+  color: var(--primary);
+}
+
+.bottom-nav-item.active .bottom-nav-icon {
+  transform: translateY(-2px);
+}
+
+.bottom-nav-item.active::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  width: 28px;
+  height: 3px;
+  background: var(--primary);
+  border-radius: 0 0 3px 3px;
+}
+
+[data-theme="dark"] .bottom-nav-item.active {
+  color: var(--primary-light);
+}
+[data-theme="dark"] .bottom-nav-item.active::after {
+  background: var(--primary-light);
+}
+
+.mobile-only-btn {
+  display: none;
+}
+
+/* ==========================================================================
+   9. نقاط الكسر والتصميم المتجاوب (Breakpoints & Responsive Strategies)
+   ========================================================================== */
+
+/* أ) الأجهزة اللوحية (Tablet: 640px – 1024px) */
+@media (min-width: 640px) and (max-width: 1024px) {
+  .header-actions #btn-export,
+  .header-actions #btn-import-wrapper {
+    display: none; /* إخفاء غير الأساسي ونقله لقائمة إضافية أو الحفاظ على الأهم */
+  }
+
+  .stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .stat-items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    width: 100%;
+    gap: 10px;
+  }
+
+  .users-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .col-notes {
+    max-width: 120px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+}
+
+/* ب) شاشات الموبايل (Mobile: أقل من 640px) */
+@media (max-width: 639.98px) {
+  body {
+    padding-bottom: calc(var(--bottom-nav-height) + env(safe-area-inset-bottom) + 8px);
+  }
+
+  /* الترويسة على الموبايل */
+  .header-container {
+    padding: 8px 12px;
+  }
+
+  .brand-titles p {
+    display: none; /* توفير مساحة في الموبايل */
+  }
+
+  .brand-titles h1 {
+    font-size: 1.15rem;
+  }
+
+  .brand-logo {
+    width: 36px;
+    height: 36px;
+    font-size: 1.3rem;
+  }
+
+  /* إخفاء الأزرار المزدحمة في الترويسة وإظهار القائمة ☰ وزر الوضع وزر اللغة فقط */
+  #auth-status-container,
+  #btn-add-member,
+  #btn-print-pdf,
+  #btn-export,
+  #btn-import-wrapper {
+    display: none !important;
+  }
+
+  .mobile-only-btn {
+    display: inline-flex !important;
+  }
+
+  /* إخفاء شريط التبويبات العلوي والاعتماد على التنقل السفلي */
+  .tabs-nav-wrapper {
+    display: none;
+  }
+
+  .nav-search-bar {
+    top: 52px;
+    padding: 6px 12px;
+  }
+
+  .search-box {
+    max-width: 100%;
+  }
+
+  /* شريط التنقل السفلي يظهر فقط هنا */
+  .mobile-bottom-nav {
+    display: flex;
+  }
+
+  /* بطاقات الإحصائيات الأفقية بالتمرير على الموبايل */
+  .stats-bar {
+    padding: 8px 12px;
+  }
+
+  .stat-items {
+    display: flex;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding-bottom: 4px;
+    width: 100%;
+  }
+
+  .stat-items::-webkit-scrollbar {
+    display: none;
+  }
+
+  .stat-item {
+    scroll-snap-align: start;
+    flex-shrink: 0;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    padding: 6px 10px;
+    border-radius: var(--radius-sm);
+  }
+
+  .stat-item:last-child {
+    flex-grow: 1;
+  }
+
+  /* الشجرة الهيكلية على الموبايل */
+  .tree-canvas-wrapper {
+    min-height: 480px;
+  }
+
+  .tree-toolbar {
+    display: none; /* يتم استبداله بالأزرار العائمة وشريط التبديل */
+  }
+
+  /* دليل الأسماء يتحول لبطاقات بالكامل */
+  .data-table-wrapper {
+    display: none;
+  }
+
+  .table-cards-container {
+    display: flex;
+  }
+
+  .mobile-filter-btn {
+    display: inline-flex;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+
+  .table-toolbar .filter-group {
+    display: none; /* يتم نقله للوحة السفلية */
+  }
+
+  /* الإحصائيات عمود واحد بعرض كامل */
+  .stats-grid {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .branches-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .users-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .users-header-bar {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  /* النوافذ المنبثقة تتحول إلى Bottom Sheet تنزلق من الأسفل */
+  .modal-backdrop {
+    align-items: flex-end;
+    padding: 0;
+  }
+
+  .modal-window {
+    max-width: 100% !important;
+    width: 100% !important;
+    border-radius: 20px 20px 0 0 !important;
+    max-height: 88vh;
+    transform: translateY(100%);
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .modal-backdrop.open .modal-window {
+    transform: translateY(0);
+  }
+
+  .modal-window::before {
+    content: '';
+    display: block;
+    width: 40px;
+    height: 4px;
+    background: var(--border-strong);
+    border-radius: 3px;
+    margin: 8px auto 2px auto;
+  }
+
+  .modal-header {
+    padding: 12px 16px 8px 16px;
+  }
+
+  .modal-body {
+    padding: 14px 16px;
+  }
+
+  .modal-footer {
+    position: sticky;
+    bottom: 0;
+    padding: 12px 16px calc(12px + env(safe-area-inset-bottom)) 16px;
+    background: var(--bg-card);
+    z-index: 5;
+  }
+
+  /* حجم خط الحقول 16px لمنع التكبير التلقائي في iOS */
+  .form-input, .form-select, .form-textarea, .search-input {
+    font-size: 16px !important;
+  }
+}
+
+/* ==========================================================================
+   10. أسلوب الطباعة (Print Stylesheet)
+   ========================================================================== */
+@media print {
+  header,
+  .stats-bar,
+  .nav-search-bar,
+  .mobile-bottom-nav,
+  .drawer-overlay,
+  .nav-drawer,
+  .mobile-tree-floating-controls,
+  .tree-mode-bar,
+  .tree-toolbar,
+  .table-toolbar,
+  .table-pagination,
+  .mobile-filter-btn,
+  .btn {
+    display: none !important;
+  }
+
+  body {
+    background: #FFFFFF !important;
+    color: #000000 !important;
+    font-size: 10pt;
+    padding: 0 !important;
+  }
+
+  .app-container, main {
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .tree-viewport-container {
+    border: none !important;
+    box-shadow: none !important;
+  }
+
+  .tree-canvas-wrapper {
+    overflow: visible !important;
+    min-height: auto !important;
+    max-height: none !important;
+    background: none !important;
+  }
+
+  .tree-node {
+    border: 1px solid #444 !important;
+    box-shadow: none !important;
+    background: #FFFFFF !important;
+    color: #000000 !important;
+  }
+
+  .tree-node .node-name {
+    color: #000000 !important;
+  }
+
+  .ft-tree li::before, .ft-tree li::after, .ft-tree ul ul::before {
+    border-color: #333333 !important;
+  }
+}

@@ -74,6 +74,8 @@ mobile_css = """
       /* Header */
       header {
         padding: 10px 12px;
+        position: relative !important;
+        top: auto !important;
       }
 
       .header-container {
@@ -161,26 +163,52 @@ mobile_css = """
         justify-content: space-between;
       }
 
-      /* Navigation Tabs & Search */
+      /* Navigation Tabs & Search - Mobile Responsive & Touch Optimized */
       .nav-search-bar {
         flex-direction: column;
         align-items: stretch;
-        gap: 10px;
-        padding: 10px 12px;
+        gap: 8px;
+        padding: 8px 10px;
+        margin: 0;
         position: sticky;
         top: 0;
-        z-index: 50;
+        z-index: 60;
+        background: rgba(248, 250, 252, 0.94);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid var(--border);
+        box-shadow: 0 4px 14px -2px rgba(0, 0, 0, 0.06);
       }
 
+      [data-theme="dark"] .nav-search-bar {
+        background: rgba(17, 24, 39, 0.94);
+        box-shadow: 0 4px 16px -2px rgba(0, 0, 0, 0.4);
+      }
+
+      .tabs-nav-wrapper {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        position: relative;
+      }
+
+      /* Pill Slider Mode (Default on Mobile) */
       .tabs {
         display: flex;
         overflow-x: auto;
         white-space: nowrap;
         -webkit-overflow-scrolling: touch;
+        scroll-snap-type: x mandatory;
         scrollbar-width: none;
-        padding-bottom: 2px;
+        -ms-overflow-style: none;
+        padding: 4px 6px;
         gap: 6px;
         width: 100%;
+        border-radius: 14px;
+        background: var(--bg-card-subtle);
+        border: 1px solid var(--border);
+        box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.04);
       }
 
       .tabs::-webkit-scrollbar {
@@ -188,19 +216,91 @@ mobile_css = """
       }
 
       .tab-btn {
-        padding: 8px 14px;
+        padding: 9px 15px;
         font-size: 0.82rem;
+        font-weight: 700;
         flex-shrink: 0;
-        border-radius: 20px;
+        scroll-snap-align: center;
+        border-radius: 10px;
+        background: var(--bg-card);
+        color: var(--text-muted);
+        border: 1px solid var(--border);
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.04);
+        touch-action: manipulation;
+        -webkit-tap-highlight-color: transparent;
+      }
+
+      .tab-btn:active {
+        transform: scale(0.94);
+      }
+
+      .tab-btn.active {
+        background: linear-gradient(135deg, #1e40af 0%, #3b82f6 100%) !important;
+        color: #ffffff !important;
+        border-color: rgba(255, 255, 255, 0.25) !important;
+        box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35), 0 2px 4px rgba(0, 0, 0, 0.08) !important;
+      }
+
+      [data-theme="dark"] .tab-btn.active {
+        background: linear-gradient(135deg, #2563eb 0%, #3b82f6 100%) !important;
+        color: #ffffff !important;
+        border-color: rgba(147, 197, 253, 0.35) !important;
+        box-shadow: 0 4px 16px rgba(59, 130, 246, 0.45) !important;
+      }
+
+      .tabs-layout-toggle-btn {
+        display: inline-flex;
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+      }
+
+      /* 2-Row / Grid Layout Mode when user toggles grid view */
+      .tabs.layout-grid {
+        display: grid;
+        grid-template-columns: repeat(6, 1fr);
+        gap: 6px;
+        overflow-x: visible;
+        white-space: normal;
+        padding: 6px;
+      }
+
+      .tabs.layout-grid .tab-btn {
+        padding: 8px 4px;
+        font-size: 0.74rem;
+        flex-direction: column;
+        gap: 4px;
+        text-align: center;
+        width: 100%;
+        border-radius: 10px;
+        scroll-snap-align: none;
+      }
+
+      .tabs.layout-grid .tab-btn:nth-child(1),
+      .tabs.layout-grid .tab-btn:nth-child(2),
+      .tabs.layout-grid .tab-btn:nth-child(3) {
+        grid-column: span 2;
+      }
+
+      .tabs.layout-grid .tab-btn:nth-child(4),
+      .tabs.layout-grid .tab-btn:nth-child(5) {
+        grid-column: span 3;
+      }
+
+      .tabs.layout-grid .tab-btn-icon {
+        font-size: 1.25rem;
       }
 
       .search-box {
         width: 100%;
+        max-width: 100%;
       }
 
       .search-input {
         width: 100%;
+        padding: 8px 34px 8px 32px;
         font-size: 16px !important; /* Prevents auto-zoom on iOS Safari */
+        border-radius: 9999px;
       }
 
       /* Interactive Tree View */

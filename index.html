@@ -1817,17 +1817,55 @@ body.lang-en .nav-drawer {
     height: 36px;
   }
 
-  /* إخفاء الأزرار المزدحمة في الترويسة وإظهار القائمة ☰ وزر الوضع وزر اللغة فقط */
+  /* إخفاء إجراءات سطح المكتب من الترويسة وإبقاء أزرار المظهر واللغة والقائمة ☰ فقط */
+  .desktop-header-action,
   #auth-status-container,
   #btn-add-member,
+  #btn-export-pdf,
   #btn-print-pdf,
+  #btn-export-json,
   #btn-export,
   #btn-import-wrapper {
     display: none !important;
   }
 
+  .header-actions {
+    gap: 6px;
+    flex-shrink: 0;
+  }
+
+  #theme-btn {
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.15rem;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
+  #lang-btn {
+    padding: 4px 8px;
+    font-size: 0.8rem;
+    display: inline-flex !important;
+    align-items: center;
+    gap: 4px;
+    border-radius: 10px;
+    flex-shrink: 0;
+  }
+
   .mobile-only-btn {
     display: inline-flex !important;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.2rem;
+    border-radius: 10px;
+    flex-shrink: 0;
   }
 
   /* إخفاء شريط التبويبات العلوي والاعتماد على التنقل السفلي */
@@ -2138,46 +2176,46 @@ footer p {
       </div>
 
       <div class="header-actions">
-        <!-- Auth Badge / Button -->
-        <div id="auth-status-container">
+        <!-- Auth Badge / Button (Desktop only) -->
+        <div id="auth-status-container" class="desktop-header-action">
           <button class="btn btn-sm" onclick="openLoginModal()" id="btn-login" title="تسجيل الدخول لتفعيل صلاحية التعديل">
             <span>🔒</span>
             <span class="t-login">تسجيل الدخول للمحررين</span>
           </button>
         </div>
 
-        <!-- Add Member (requires auth) -->
-        <button class="btn btn-primary" onclick="handleProtectedAction(openAddMemberModal)" id="btn-add-member" title="إضافة فرد جديد">
+        <!-- Add Member (Desktop only) -->
+        <button class="btn btn-primary desktop-header-action" onclick="handleProtectedAction(openAddMemberModal)" id="btn-add-member" title="إضافة فرد جديد">
           <span>➕</span>
           <span class="t-add-member">إضافة فرد</span>
         </button>
 
-        <!-- Export to PDF Button -->
-        <button class="btn btn-success" onclick="exportToPDF()" id="btn-export-pdf" title="تصدير شجرة العائلة كملف PDF">
+        <!-- Export to PDF Button (Desktop only) -->
+        <button class="btn btn-success desktop-header-action" onclick="exportToPDF()" id="btn-export-pdf" title="تصدير شجرة العائلة كملف PDF">
           <span>📄</span>
           <span class="t-export-pdf">تصدير PDF</span>
         </button>
 
-        <!-- Export JSON -->
-        <button class="btn" onclick="exportData()" title="تصدير شجرة العائلة كملف JSON">
+        <!-- Export JSON (Desktop only) -->
+        <button class="btn desktop-header-action" onclick="exportData()" id="btn-export-json" title="تصدير شجرة العائلة كملف JSON">
           <span>💾</span>
           <span class="t-export">تصدير JSON</span>
         </button>
 
-        <!-- Import JSON (requires auth) -->
-        <label class="btn" style="margin: 0; cursor: pointer;" title="استيراد ملف JSON" id="btn-import-wrapper">
+        <!-- Import JSON (Desktop only) -->
+        <label class="btn desktop-header-action" style="margin: 0; cursor: pointer;" title="استيراد ملف JSON" id="btn-import-wrapper">
           <span>📥</span>
           <span class="t-import">استيراد</span>
           <input type="file" id="import-file" accept=".json" style="display: none;" onchange="handleProtectedImport(event)">
         </label>
 
-        <!-- Theme Toggle -->
-        <button class="btn btn-icon" onclick="toggleTheme()" id="theme-btn" title="تغيير المظهر (فاتح / داكن)">
+        <!-- Theme Toggle (Visible on Desktop and Mobile) -->
+        <button class="btn btn-icon" onclick="toggleTheme()" id="theme-btn" title="تغيير المظهر (فاتح / داكن)" aria-label="تغيير المظهر">
           <span id="theme-icon">🌙</span>
         </button>
 
-        <!-- Language Toggle -->
-        <button class="btn btn-accent" onclick="toggleLanguage()" id="lang-btn" title="Switch Language / تغيير اللغة">
+        <!-- Language Toggle (Visible on Desktop and Mobile) -->
+        <button class="btn btn-accent" onclick="toggleLanguage()" id="lang-btn" title="Switch Language / تغيير اللغة" aria-label="تغيير اللغة">
           🌐 <span>English</span>
         </button>
         <!-- Mobile Drawer Toggle -->
@@ -2208,7 +2246,7 @@ footer p {
           <span>➕</span> <span class="t-add-member">إضافة فرد جديد</span>
         </button>
         <button class="drawer-action-btn" onclick="closeMobileDrawer(); exportToPDF()">
-          <span>🖨️</span> <span class="t-export-pdf">تصدير كـ ملف PDF</span>
+          <span>📄</span> <span class="t-export-pdf">تصدير كـ ملف PDF</span>
         </button>
         <button class="drawer-action-btn" onclick="closeMobileDrawer(); exportData()">
           <span>💾</span> <span class="t-export">تصدير JSON</span>
@@ -2217,6 +2255,16 @@ footer p {
           <span>📥</span> <span class="t-import">استيراد JSON</span>
           <input type="file" accept=".json" style="display: none;" onchange="closeMobileDrawer(); handleProtectedImport(event)">
         </label>
+
+        <div style="margin: 12px 0 6px 0; padding-top: 10px; border-top: 1px solid var(--border); font-size: 0.78rem; font-weight: 700; color: var(--text-muted);">
+          المظهر واللغة • Settings
+        </div>
+        <button class="drawer-action-btn" onclick="toggleTheme()" id="drawer-theme-btn">
+          <span id="drawer-theme-icon">🌙</span> <span id="drawer-theme-text">تغيير المظهر (ليلي / نهاري)</span>
+        </button>
+        <button class="drawer-action-btn" onclick="toggleLanguage()" id="drawer-lang-btn">
+          <span>🌐</span> <span id="drawer-lang-text">English (تحويل للإنجليزية)</span>
+        </button>
       </div>
     </div>
     <div class="drawer-footer">
@@ -3787,7 +3835,18 @@ footer p {
     function setTheme(theme) {
       currentTheme = theme;
       document.body.setAttribute('data-theme', theme);
-      document.getElementById('theme-icon').textContent = theme === 'dark' ? '☀️' : '🌙';
+      const isDark = theme === 'dark';
+      const icon = isDark ? '☀️' : '🌙';
+      const themeIconEl = document.getElementById('theme-icon');
+      if (themeIconEl) themeIconEl.textContent = icon;
+      const drawerIconEl = document.getElementById('drawer-theme-icon');
+      if (drawerIconEl) drawerIconEl.textContent = icon;
+      const drawerTextEl = document.getElementById('drawer-theme-text');
+      if (drawerTextEl) {
+        drawerTextEl.textContent = currentLanguage === 'ar' 
+          ? (isDark ? 'الوضع النهاري (فاتح)' : 'الوضع الليلي (داكن)')
+          : (isDark ? 'Light Mode' : 'Dark Mode');
+      }
       localStorage.setItem(LS_THEME_KEY, theme);
     }
 
@@ -3810,7 +3869,21 @@ footer p {
       document.documentElement.lang = lang;
       document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
       document.body.className = `lang-${lang}`;
-      document.getElementById('lang-btn').innerHTML = lang === 'ar' ? '🌐 <span>English</span>' : '🌐 <span>عربي</span>';
+      const langBtn = document.getElementById('lang-btn');
+      if (langBtn) {
+        langBtn.innerHTML = lang === 'ar' ? '🌐 <span>English</span>' : '🌐 <span>عربي</span>';
+      }
+      const drawerLangText = document.getElementById('drawer-lang-text');
+      if (drawerLangText) {
+        drawerLangText.textContent = lang === 'ar' ? 'English (تحويل للإنجليزية)' : 'العربية (Switch to Arabic)';
+      }
+      const drawerThemeText = document.getElementById('drawer-theme-text');
+      if (drawerThemeText) {
+        const isDark = currentTheme === 'dark';
+        drawerThemeText.textContent = lang === 'ar' 
+          ? (isDark ? 'الوضع النهاري (فاتح)' : 'الوضع الليلي (داكن)')
+          : (isDark ? 'Light Mode' : 'Dark Mode');
+      }
       
       applyTranslations();
       updateAuthUI();

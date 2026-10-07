@@ -1180,6 +1180,422 @@
         margin: 1cm;
       }
     }
+
+    /* =========================================================================
+       MOBILE & TABLET RESPONSIVE STYLES
+       ========================================================================= */
+    /* Floating Mobile Controls for Tree */
+    .mobile-tree-floating-controls {
+      display: none;
+      position: absolute;
+      bottom: 16px;
+      left: 16px;
+      z-index: 10;
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 30px;
+      padding: 4px 8px;
+      box-shadow: var(--shadow-lg);
+      gap: 6px;
+      align-items: center;
+    }
+
+    [dir="rtl"] .mobile-tree-floating-controls {
+      left: auto;
+      right: 16px;
+    }
+
+    .mobile-float-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--bg-card-subtle);
+      color: var(--text);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1rem;
+      cursor: pointer;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+      transition: all 0.2s ease;
+    }
+
+    .mobile-float-btn:active {
+      transform: scale(0.92);
+      background: var(--primary);
+      color: white;
+    }
+
+    @media (max-width: 900px) {
+      .mobile-tree-floating-controls {
+        display: flex;
+      }
+    }
+
+    @media (max-width: 768px) {
+      /* General layout */
+      body {
+        font-size: 14px;
+      }
+
+      main {
+        padding: 12px 10px;
+      }
+
+      /* Header */
+      header {
+        padding: 10px 12px;
+      }
+
+      .header-container {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 12px;
+      }
+
+      .brand {
+        justify-content: center;
+        text-align: center;
+      }
+
+      .brand-logo {
+        width: 38px;
+        height: 38px;
+        font-size: 1.15rem;
+      }
+
+      .brand-titles h1 {
+        font-size: 1.2rem;
+      }
+
+      .brand-titles p {
+        font-size: 0.78rem;
+      }
+
+      .header-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 6px;
+      }
+
+      .header-actions .btn {
+        padding: 6px 10px;
+        font-size: 0.78rem;
+        flex-grow: 1;
+        justify-content: center;
+      }
+
+      .header-actions .btn.btn-icon {
+        flex-grow: 0;
+      }
+
+      #auth-status-container {
+        width: 100%;
+        display: flex;
+        justify-content: center;
+        margin-bottom: 2px;
+      }
+
+      #auth-status-container .btn,
+      #auth-status-container .auth-badge {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+        font-size: 0.8rem;
+      }
+
+      /* Stats Bar */
+      .stats-bar {
+        padding: 8px 10px;
+      }
+
+      .stats-container {
+        flex-direction: column;
+        gap: 8px;
+        align-items: stretch;
+      }
+
+      .stat-items {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 6px;
+        width: 100%;
+      }
+
+      .stat-item {
+        font-size: 0.78rem;
+        background: var(--bg-card);
+        padding: 6px 8px;
+        border-radius: var(--radius-sm);
+        border: 1px solid var(--border);
+        justify-content: space-between;
+      }
+
+      /* Navigation Tabs & Search */
+      .nav-search-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 10px 12px;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+
+      .tabs {
+        display: flex;
+        overflow-x: auto;
+        white-space: nowrap;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .tabs::-webkit-scrollbar {
+        display: none;
+      }
+
+      .tab-btn {
+        padding: 8px 14px;
+        font-size: 0.82rem;
+        flex-shrink: 0;
+        border-radius: 20px;
+      }
+
+      .search-box {
+        width: 100%;
+      }
+
+      .search-input {
+        width: 100%;
+        font-size: 16px !important; /* Prevents auto-zoom on iOS Safari */
+      }
+
+      /* Interactive Tree View */
+      .tree-viewport-container {
+        height: 72vh;
+        border-radius: var(--radius-sm);
+      }
+
+      .tree-toolbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 6px;
+        padding: 6px 10px;
+      }
+
+      .tree-toolbar > div {
+        justify-content: space-between;
+        width: 100%;
+      }
+
+      .tree-toolbar .btn {
+        padding: 4px 8px;
+        font-size: 0.75rem;
+      }
+
+      .tree-canvas-wrapper {
+        touch-action: pan-x pan-y pinch-zoom;
+        cursor: grab;
+      }
+
+      .tree-canvas-wrapper:active {
+        cursor: grabbing;
+      }
+
+      .tree-node {
+        min-width: 95px;
+        padding: 6px 10px;
+        border-radius: 10px;
+      }
+
+      .node-name {
+        font-size: 0.9rem;
+      }
+
+      .node-sub {
+        font-size: 0.68rem;
+      }
+
+      .node-badge {
+        font-size: 0.6rem;
+        padding: 1px 5px;
+      }
+
+      /* Branches View */
+      .branches-grid {
+        grid-template-columns: 1fr;
+        gap: 14px;
+      }
+
+      .branch-card {
+        border-radius: var(--radius-sm);
+      }
+
+      .branch-header {
+        padding: 12px 14px;
+      }
+
+      .branch-body {
+        padding: 12px 14px;
+      }
+
+      /* Directory & Tables */
+      .table-container {
+        border-radius: var(--radius-sm);
+        margin-bottom: 16px;
+      }
+
+      .table-header {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        padding: 12px 14px;
+      }
+
+      .table-filters {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+        width: 100%;
+      }
+
+      .table-filters .form-select {
+        width: 100%;
+        font-size: 16px !important;
+      }
+
+      .data-table th, .data-table td {
+        padding: 8px 10px;
+        font-size: 0.8rem;
+      }
+
+      .data-table-wrapper {
+        -webkit-overflow-scrolling: touch;
+      }
+
+      /* Users Management View */
+      .users-header-bar {
+        flex-direction: column;
+        align-items: stretch;
+        padding: 14px;
+      }
+
+      .users-header-bar > div:last-child {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 6px;
+        width: 100%;
+      }
+
+      .users-header-bar > div:last-child .btn,
+      .users-header-bar > div:last-child label.btn {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .users-stats-grid {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+      }
+
+      .user-metric-card {
+        padding: 10px 12px;
+        gap: 10px;
+      }
+
+      .metric-icon {
+        width: 38px;
+        height: 38px;
+        font-size: 1.15rem;
+      }
+
+      .metric-val {
+        font-size: 1.2rem;
+      }
+
+      .metric-lbl {
+        font-size: 0.72rem;
+      }
+
+      .session-banner {
+        flex-direction: column;
+        align-items: stretch;
+        text-align: center;
+        gap: 10px;
+        padding: 12px 14px;
+      }
+
+      .session-banner button {
+        width: 100%;
+      }
+
+      /* Modals on Mobile */
+      .modal-window {
+        width: 95% !important;
+        max-width: 95% !important;
+        max-height: 90vh;
+        overflow-y: auto;
+        margin: auto;
+        border-radius: var(--radius);
+      }
+
+      .modal-header {
+        padding: 12px 16px;
+      }
+
+      .modal-header h3 {
+        font-size: 1.05rem;
+      }
+
+      .modal-body {
+        padding: 14px 16px;
+      }
+
+      .modal-footer {
+        padding: 12px 16px;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+
+      .modal-footer .btn {
+        flex: 1;
+        justify-content: center;
+      }
+
+      /* Form Controls iOS Optimization */
+      .form-input, .form-select, .form-textarea {
+        font-size: 16px !important; /* Critical to prevent iOS Safari auto zoom */
+        padding: 9px 12px;
+      }
+
+      /* Footer */
+      footer {
+        padding: 16px 12px;
+        font-size: 0.85rem;
+      }
+
+      .footer-author {
+        font-size: 0.9rem;
+        padding: 3px 12px;
+      }
+    }
+
+    @media (max-width: 420px) {
+      .stat-items {
+        grid-template-columns: 1fr;
+      }
+
+      .users-stats-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
   </style>
 </head>
 <body data-theme="light" class="lang-ar">
@@ -1313,12 +1729,22 @@
             <span style="font-size: 0.8rem; color: var(--text-muted); margin-inline-start: 8px;" id="zoom-level-text">100%</span>
           </div>
           <div style="display: flex; gap: 8px; align-items: center;">
-            <button class="btn btn-sm" onclick="expandAllNodes()">📂 <span class="t-expand-all">بسط الكل</span></button>
-            <button class="btn btn-sm" onclick="collapseToGen(4)">📁 <span class="t-collapse-branches">طي للأجداد</span></button>
+            <button class="btn btn-sm" onclick="expandAllNodes()" id="btn-expand-all">📂 <span class="t-expand-all">بسط الكل</span></button>
+            <button class="btn btn-sm btn-primary" onclick="collapseToGen(4)" id="btn-collapse-ancestors">📁 <span class="t-collapse-branches">طي للأجداد</span></button>
           </div>
         </div>
 
         <div class="tree-canvas-wrapper" id="canvas-wrapper">
+
+          <!-- Floating Mobile Controls for Touch Navigation -->
+          <div class="mobile-tree-floating-controls" id="mobile-floating-zoom">
+            <button class="mobile-float-btn" onclick="zoomTree(0.15)" title="تكبير">➕</button>
+            <button class="mobile-float-btn" onclick="zoomTree(-0.15)" title="تصغير">➖</button>
+            <button class="mobile-float-btn" onclick="resetZoom()" title="إعادة ضبط">🎯</button>
+            <button class="mobile-float-btn" onclick="collapseToGen(4)" id="mobile-float-collapse" title="طي للأجداد">📁</button>
+            <button class="mobile-float-btn" onclick="expandAllNodes()" id="mobile-float-expand" title="بسط الفروع">📂</button>
+          </div>
+
           <div class="tree-canvas" id="tree-canvas">
             <!-- Tree HTML injected by JavaScript -->
           </div>
@@ -1947,7 +2373,16 @@
       initTheme();
       initLanguage();
       renderAllViews();
+      // Collapse to ancestors by default on initial page load
+      collapseToGen(4);
       initPanZoom();
+      setTimeout(() => {
+        const wrapper = document.getElementById('canvas-wrapper');
+        if (wrapper) {
+          wrapper.scrollLeft = (wrapper.scrollWidth - wrapper.clientWidth) / 2;
+          wrapper.scrollTop = 0;
+        }
+      }, 120);
     });
 
     // Load Data
@@ -2776,12 +3211,45 @@
       renderTreeView();
     }
 
+    function updateTreeToggleButtons(isCollapsed) {
+      const btnCollapse = document.getElementById('btn-collapse-ancestors');
+      const btnExpand = document.getElementById('btn-expand-all');
+      const floatCollapse = document.getElementById('mobile-float-collapse');
+      const floatExpand = document.getElementById('mobile-float-expand');
+
+      if (btnCollapse && btnExpand) {
+        if (isCollapsed) {
+          btnCollapse.classList.add('btn-primary');
+          btnExpand.classList.remove('btn-primary');
+        } else {
+          btnExpand.classList.add('btn-primary');
+          btnCollapse.classList.remove('btn-primary');
+        }
+      }
+      if (floatCollapse && floatExpand) {
+        if (isCollapsed) {
+          floatCollapse.style.borderColor = 'var(--primary)';
+          floatExpand.style.borderColor = 'var(--border)';
+        } else {
+          floatExpand.style.borderColor = 'var(--primary)';
+          floatCollapse.style.borderColor = 'var(--border)';
+        }
+      }
+    }
+
     function expandAllNodes() {
       collapsedNodes.clear();
       renderTreeView();
+      updateTreeToggleButtons(false);
+      setTimeout(() => {
+        const wrapper = document.getElementById('canvas-wrapper');
+        if (wrapper) {
+          wrapper.scrollLeft = (wrapper.scrollWidth - wrapper.clientWidth) / 2;
+        }
+      }, 50);
     }
 
-    function collapseToGen(genLimit) {
+    function collapseToGen(genLimit = 4) {
       collapsedNodes.clear();
       flatMembers.forEach(m => {
         if (m.generation >= genLimit && m.children_count > 0) {
@@ -2789,6 +3257,14 @@
         }
       });
       renderTreeView();
+      updateTreeToggleButtons(true);
+      setTimeout(() => {
+        const wrapper = document.getElementById('canvas-wrapper');
+        if (wrapper) {
+          wrapper.scrollLeft = (wrapper.scrollWidth - wrapper.clientWidth) / 2;
+          wrapper.scrollTop = 0;
+        }
+      }, 50);
     }
 
     // Zoom & Pan

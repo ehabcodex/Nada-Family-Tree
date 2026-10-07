@@ -2506,6 +2506,9 @@ footer p {
           <button class="btn btn-primary" onclick="openAddUserModal()">
             <span>➕</span> <span class="t-add-user-btn">إضافة مستخدم جديد</span>
           </button>
+          <button class="btn btn-success" onclick="downloadUpdatedSiteFile()" title="تنزيل وتصدير ملف الموقع index.html محدثاً بكل المستخدمين والبيانات لنشره على GitHub">
+            <span>🚀</span> <span>تصدير الموقع محدثاً لـ GitHub</span>
+          </button>
           <button class="btn" onclick="exportUsersData()" title="تصدير نسخة احتياطية من قائمة المستخدمين">
             <span>💾</span> <span class="t-export-users-btn">نسخة احتياطية</span>
           </button>
@@ -2736,7 +2739,7 @@ footer p {
 
         <div class="form-group">
           <label class="form-label">اسم المستخدم (المحرر):</label>
-          <input type="text" id="login-username" class="form-input" placeholder="ehab" value="ehab">
+          <input type="text" id="login-username" class="form-input" placeholder="أدخل اسم المستخدم" autocomplete="username">
         </div>
 
         <div class="form-group">
@@ -2782,7 +2785,9 @@ footer p {
           </details>
         </div>
       </div>
-      <div class="modal-footer">
+      <div class="modal-footer" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 8px;">
+        <button class="btn btn-primary" onclick="closeModal('manage-users-modal'); switchTab('users');">📋 الانتقال لصفحة الصلاحيات الشاملة</button>
+        <button class="btn btn-success" onclick="downloadUpdatedSiteFile()" title="تنزيل وتصدير ملف الموقع index.html محدثاً بكل المستخدمين والبيانات لنشره على GitHub">🚀 تصدير لـ GitHub</button>
         <button class="btn" onclick="closeModal('manage-users-modal')">إغلاق</button>
       </div>
     </div>
@@ -3229,6 +3234,9 @@ footer p {
             </div>
             <button class="btn btn-sm btn-danger" onclick="closeMobileDrawer(); logout();" style="padding: 4px 10px;">${t.logout}</button>
           </div>
+          <button class="drawer-action-btn" onclick="closeMobileDrawer(); openManageUsersModal();" style="background: rgba(var(--primary-rgb), 0.1); border: 1px solid var(--primary); font-weight: 700; color: var(--primary); margin-bottom: 8px;">
+            <span>⚙️</span> <span>إدارة المصرحين والمستخدمين</span>
+          </button>
         `;
       } else {
         container.innerHTML = `
@@ -3313,7 +3321,7 @@ footer p {
         updateAuthUI();
         showToast(currentLanguage === 'ar' ? `مرحباً بك يا ${match.displayName} - تم تفعيل صلاحيات التعديل` : `Welcome ${match.displayName} - Editing permissions activated!`);
       } else {
-        alert(currentLanguage === 'ar' ? 'بيانات الدخول غير صحيحة. كلمة المرور الافتراضية هي: 1234' : 'Invalid credentials. Default password is: 1234');
+        alert(currentLanguage === 'ar' ? 'اسم المستخدم أو كلمة المرور غير صحيحة. يرجى التأكد والمحاولة مجدداً.' : 'Invalid username or password. Please check your credentials and try again.');
       }
     }
 
@@ -3725,6 +3733,132 @@ footer p {
       };
       reader.readAsText(file);
       event.target.value = '';
+    }
+
+    // Modal User Management Functions
+    function openManageUsersModal() {
+      if (!isAuthorized()) {
+        openLoginModal();
+        return;
+      }
+      renderManageUsersModalList();
+      openModal('manage-users-modal');
+    }
+
+    function renderManageUsersModalList() {
+      const container = document.getElementById('editors-list-container');
+      if (!container) return;
+      const users = getUsersList();
+      let html = '<div style="display: flex; flex-direction: column; gap: 6px;">';
+      users.forEach(u => {
+        const isSuper = u.role === 'super_admin';
+        html += `
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 6px 10px; background: var(--bg-card); border-radius: 6px; border: 1px solid var(--border); font-size: 0.85rem;">
+            <div>
+              <strong>${u.displayName}</strong> <span style="color: var(--text-muted); font-size: 0.78rem;">(@${u.username})</span>
+              <span style="font-size: 0.7rem; padding: 1px 6px; border-radius: 4px; background: ${isSuper ? 'rgba(184,137,59,0.15)' : 'rgba(47,93,70,0.15)'}; color: ${isSuper ? 'var(--accent)' : 'var(--primary)'}; margin-inline-start: 6px;">
+                ${isSuper ? 'مشرف عام' : 'محرر'}
+              </span>
+            </div>
+            <div style="display: flex; gap: 4px;">
+              <button class="btn btn-sm" onclick="closeModal('manage-users-modal'); openChangeUserPasswordModal('${u.username}')" style="padding: 2px 6px; font-size: 0.75rem;">🔑 تغيير الرمز</button>
+              ${(!isSuper && u.username.toLowerCase() !== 'ehab') ? `<button class="btn btn-sm btn-danger" onclick="deleteUser('${u.username}'); renderManageUsersModalList();" style="padding: 2px 6px; font-size: 0.75rem;">🗑️</button>` : ''}
+            </div>
+          </div>
+        `;
+      });
+      html += '</div>';
+      container.innerHTML = html;
+      const myDisplay = document.getElementById('my-username-display');
+      if (myDisplay && currentUser) myDisplay.textContent = currentUser.displayName;
+    }
+
+    function changeMyPassword() {
+      if (!currentUser) return;
+      const newPwd = document.getElementById('new-password-input').value.trim();
+      if (!newPwd) {
+        alert('يرجى كتابة كلمة المرور الجديدة.');
+        return;
+      }
+      let users = getUsersList();
+      const idx = users.findIndex(x => x.username.toLowerCase() === currentUser.username.toLowerCase());
+      if (idx !== -1) {
+        users[idx].password = newPwd;
+        saveUsersList(users);
+        document.getElementById('new-password-input').value = '';
+        renderUsersPage();
+        renderManageUsersModalList();
+        showToast('تم حفظ كلمة المرور الجديدة لحسابك بنجاح!');
+      }
+    }
+
+    function addNewEditor() {
+      if (!isSuperAdmin()) {
+        alert('إضافة المحررين تتطلب صلاحية المشرف العام.');
+        return;
+      }
+      const u = document.getElementById('new-editor-username').value.trim().toLowerCase();
+      const d = document.getElementById('new-editor-display').value.trim();
+      const p = document.getElementById('new-editor-pwd').value.trim();
+      if (!u || !d || !p) {
+        alert('يرجى ملء جميع الحقول (اسم المستخدم، الاسم الظاهر، كلمة المرور).');
+        return;
+      }
+      let users = getUsersList();
+      if (users.some(x => x.username.toLowerCase() === u)) {
+        alert('اسم المستخدم هذا مسجل مسبقاً، يرجى اختيار اسم آخر.');
+        return;
+      }
+      const today = new Date().toISOString().split('T')[0];
+      users.push({
+        username: u,
+        displayName: d,
+        displayNameEn: d,
+        password: p,
+        role: 'branch_editor',
+        branch: 'ALL',
+        createdAt: today,
+        status: 'active'
+      });
+      saveUsersList(users);
+      document.getElementById('new-editor-username').value = '';
+      document.getElementById('new-editor-display').value = '';
+      document.getElementById('new-editor-pwd').value = '';
+      renderUsersPage();
+      renderManageUsersModalList();
+      showToast(`تمت إضافة المحرر (${d}) بنجاح!`);
+    }
+
+    // Export completely updated index.html for persistent GitHub Pages update
+    async function downloadUpdatedSiteFile() {
+      try {
+        showToast('جاري تحضير ملف الموقع المحدّث مع كافة المستخدمين والشجرة...');
+        const res = await fetch('index.html');
+        let text = await res.text();
+        const currentUsers = getUsersList();
+        const currentData = treeData;
+        
+        // استبدال قائمة المستخدمين الافتراضية بالقائمة الحالية
+        const usersJsonStr = JSON.stringify(currentUsers, null, 6);
+        text = text.replace(/const DEFAULT_ADMIN_USERS = \[[\s\S]*?\];/, `const DEFAULT_ADMIN_USERS = ${usersJsonStr};`);
+        
+        // استبدال بيانات الشجرة الحالية
+        const treeJsonStr = JSON.stringify(currentData);
+        text = text.replace(/const MASTER_TREE_DATA = \{[\s\S]*?\n    \};/, `const MASTER_TREE_DATA = ${treeJsonStr};`);
+        
+        const blob = new Blob([text], { type: 'text/html;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'index.html';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+        showToast('تم تحميل ملف index.html المحدّث! قم برفعه إلى GitHub لتثبيت التعديل للجميع.');
+      } catch(e) {
+        alert('حدث خطأ أثناء تنزيل الملف المحدث: ' + e.message);
+      }
     }
 
     // =========================================================================
